@@ -41,6 +41,9 @@ decreaseQuantity= ()=>{
   // })
 
   //second form (you can pass the call back functioin)
+  if(this.state.qty<=0){
+    return;
+  }
 
   this.setState((prevState)=>{
     return {
@@ -52,6 +55,7 @@ decreaseQuantity= ()=>{
 
 
 render(){
+  
   const { price, title,discription,qty} = this.state;
 return (
 
