@@ -81,6 +81,21 @@ class Cart extends React.Component{
           })
 
         }
+        getQuantity=()=>{
+          var count =0;
+          const {products} =this.state;
+          products.forEach((item)=> count+=item.qty);
+
+          return count
+        }
+
+        getTotalPrice=()=>{
+
+          var price=0;
+          const {products} = this.state;
+          products.forEach((item)=> price = price + item.qty*item.price);
+          return price
+        }
 
 render(){
  const {products} = this.state;
@@ -98,7 +113,7 @@ render(){
                       <div className="p-5">
                         <div className="d-flex justify-content-between align-items-center mb-5">
                           <h1 className="fw-bold mb-0 text-black">Shopping Cart</h1>
-                          <h6 className="mb-0 text-muted">3 items</h6>
+                          <h6 className="mb-0 text-muted">{this.getQuantity()} items </h6>
                         </div>
                       {/* <CartItem qty ={1} price ={99} title ={"watch"}/> */}
                       {/* we are passig attributes as props every instance have property props */}
@@ -132,8 +147,8 @@ render(){
                         <hr className="my-4"/>
       
                         <div className="d-flex justify-content-between mb-4">
-                          <h5 className="text-uppercase">items 3</h5>
-                          <h5>€ 132.00</h5>
+                          <h5 className="text-uppercase">items {this.getQuantity()}</h5>
+                          <h5>€ {this.getTotalPrice()}</h5>
                         </div>
       
                         <h5 className="text-uppercase mb-3">Shipping</h5>
@@ -160,7 +175,7 @@ render(){
       
                         <div className="d-flex justify-content-between mb-5">
                           <h5 className="text-uppercase">Total price</h5>
-                          <h5>€ 137.00</h5>
+                          <h5>€ {this.getTotalPrice()}</h5>
                         </div>
       
                         <button type="button" className="btn btn-dark btn-block btn-lg"
