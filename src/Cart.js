@@ -3,8 +3,88 @@ import React from 'react';
 import CartItem from './CartItem';
 class Cart extends React.Component{
 
-render(){
+    constructor(){
+        super();
+        
+        this.state = {
+        
+        products : [
+            {
+                price : 99,
+                title : "Shirt",
+                discription : 'Cotton T-Shirt',
+                qty : 1,
+                id :1
+            },
+            {
+                price : 999,
+                title : "Mobile",
+                discription : 'Redmi Note 9',
+                qty : 6,
+                id :2
+            },
+            {
+                price : 9999,
+                title : "Laptop",
+                discription : 'Asus Vivobook',
+                qty : 1,
+                id : 3
+            }
+        ]
+        
+        }
+        
+        }
 
+
+        increaseQuantity= (item)=>{
+         const {products} = this.state;
+         console.log(item);
+
+         const index = products.indexOf(item);
+         products[index].qty+=1;
+         this.setState({
+          products: products,
+         })
+        
+        }
+        
+        decreaseQuantity= (item)=>{
+          console.log(item);
+        // first form 
+          // this.setState({
+          //   qty : this.state.qty+1,
+          // })
+        
+          //second form (you can pass the call back functioin)
+          const {products} = this.state;
+          console.log(item);
+         
+          const index = products.indexOf(item);
+          if(products[index].qty<=0){
+            return;
+          }
+          products[index].qty-=1;
+          this.setState({
+           products: products,
+          })
+        
+        }
+
+
+        onDeletequantity=(id)=>{
+          const {products} = this.state;
+          const items = products.filter((product)=>product.id!==id);
+
+          this.setState({
+            products : items
+          })
+
+        }
+
+render(){
+ const {products} = this.state;
+ console.log(products)
     return(
 
         <section className="h-100 h-custom" >
@@ -20,10 +100,26 @@ render(){
                           <h1 className="fw-bold mb-0 text-black">Shopping Cart</h1>
                           <h6 className="mb-0 text-muted">3 items</h6>
                         </div>
-                      <CartItem/>
-                      <CartItem/>
-                      <CartItem/>
-      
+                      {/* <CartItem qty ={1} price ={99} title ={"watch"}/> */}
+                      {/* we are passig attributes as props every instance have property props */}
+                     
+                      
+        {
+            products.map((item)=>{
+                return(
+                    <CartItem product ={item}
+                     key={item.id}
+                    onIncreasequantity ={this.increaseQuantity}
+                    onDecreasequantity = {this.decreaseQuantity}
+                    onDeletequantity = {this.onDeletequantity}
+                    // jsx = {<h1>TEST</h1>}
+                    // componenet = {<CartItem/>}
+                     />
+                    //  you can pass many attributes in the props 
+                )
+              
+            })
+        }
                         <div className="pt-5">
                           <h6 className="mb-0"><a href="#!" className="text-body"><i
                                 className="fas fa-long-arrow-alt-left me-2"></i>Back to shop</a></h6>
@@ -88,5 +184,6 @@ render(){
 
 
 }
+
 
 export default Cart;
