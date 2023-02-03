@@ -31,7 +31,7 @@ return (
         className="form-control form-control-sm" />
 
       <button className="btn btn-link px-2"
-        onClick={()=>this.props.onIncreasequantity(this.props.product)}>
+        onClick={()=>this.props.onIncreasequantity(this.props.product.id)}>
         <i className="fas fa-plus"></i>
       </button>
     </div>

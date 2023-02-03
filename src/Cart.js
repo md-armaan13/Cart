@@ -1,6 +1,10 @@
 import React from 'react';
 
 import CartItem from './CartItem';
+import { collection, query, getDocs ,onSnapshot,where  } from "firebase/firestore";
+import {db} from './index'
+
+
 class Cart extends React.Component{
 
     constructor(){
@@ -9,27 +13,7 @@ class Cart extends React.Component{
         this.state = {
         
         products : [
-            {
-                price : 99,
-                title : "Shirt",
-                discription : 'Cotton T-Shirt',
-                qty : 1,
-                id :1
-            },
-            {
-                price : 999,
-                title : "Mobile",
-                discription : 'Redmi Note 9',
-                qty : 6,
-                id :2
-            },
-            {
-                price : 9999,
-                title : "Laptop",
-                discription : 'Asus Vivobook',
-                qty : 1,
-                id : 3
-            }
+            
         ]
         
         }
@@ -38,15 +22,20 @@ class Cart extends React.Component{
 
 
         increaseQuantity= (item)=>{
-         const {products} = this.state;
-         console.log(item);
+        //  const {products} = this.state;
+        //  console.log(item);
 
-         const index = products.indexOf(item);
-         products[index].qty+=1;
-         this.setState({
-          products: products,
-         })
-        
+        //  const index = products.indexOf(item);
+        //  products[index].qty+=1;
+        //  this.setState({
+        //   products: products,
+        //  })
+        const citiesRef = collection(db, "product");
+
+// Create a query against the collection.
+const q = query(citiesRef, where("price", "==", "90"));
+          q.update()
+        console.log(q);
         }
         
         decreaseQuantity= (item)=>{
@@ -96,6 +85,38 @@ class Cart extends React.Component{
           products.forEach((item)=> price = price + item.qty*item.price);
           return price
         }
+            async componentDidMount(){
+            //   const q = query(collection(db, "product"));
+            //   const querySnapshot = await getDocs(q);
+            //   console.log(querySnapshot);
+            // const products=  querySnapshot.docs.map((doc) => {
+            //     // doc.data() is never undefined for query doc snapshots
+            //     console.log(doc.data());
+            //     const data = doc.data();
+            //     data['id'] = doc.id;
+            //     return data;
+            //   });
+
+            //  
+            
+const q = query(collection(db, "product"));
+const unsubscribe = onSnapshot(q, (querySnapshot) => {
+
+ const product= querySnapshot.docs.map((doc) => {
+    const data = doc.data();
+    data['id']= doc.id;
+    return data;
+  });
+  console.log(product);
+  this.setState({
+        products : product
+      })
+
+});
+
+
+
+   }
 
 render(){
  const {products} = this.state;
